@@ -1,0 +1,127 @@
+{
+  "name": "enron_mail",
+  "storage_type": "disk",
+  "shard_num": 1,
+  "mappings": {
+      "properties": {
+          "Message_ID": {
+              "type": "keyword",
+              "index": true,
+              "store": true,
+              "aggregatable":false
+          },
+          "Date": {
+              "type": "date",
+              "index": true,
+              "store": true,
+              "format": "2006-01-02T15:04:05Z07:00",
+              "sortable": true,
+              "aggregatable": true
+          },
+          "From": {
+              "type": "text",
+              "index": true,
+              "store": true
+          },
+          "To": {
+              "type": "text",
+              "index": true,
+              "store": true
+          },
+          "Cc": {
+              "type": "text",
+              "index": true,
+              "store": true
+          },
+          "Subject": {
+              "type": "text",
+              "index": true,
+              "store": true,
+              "highlightable": true
+          },
+          "Mime_version": {
+              "type": "numeric",
+              "store": true
+          },
+          "Content_Type": {
+              "type": "text",
+              "index": true,
+              "store": true
+          },
+          "Content_Transfer_Encoding": {
+              "type": "text",
+              "store": true
+          },
+          "Bcc": {
+            "type": "text",
+            "index": true,
+            "store": true
+          },
+          "X_from": {
+              "type": "text",
+              "index": true,
+              "store": true
+          },
+          "X_to": {
+              "type": "text",
+              "index": true,
+              "store": true
+          },
+          "X_cc": {
+              "type": "text",
+              "index": true,
+              "store": true
+          },
+          "X_bcc": {
+              "type": "text",
+              "index": true,
+              "store": true
+          },
+          "X_folder": {
+              "type": "text",
+              "index": true,
+              "store": true
+          },
+          "X_origin": {
+              "type": "text",
+              "index": true,
+              "store": true
+          },
+          "X_filename": {
+              "type": "text",
+              "index": true,
+              "store": true
+          },
+          "Content": {
+              "type": "text",
+              "index": true,
+              "store": true,
+              "highlightable":true
+          }
+      }
+  },
+  "settings": {
+      "analysis": {
+          "analyzer": {
+              "default": {
+                  "type": "standard"
+              },
+              "my_analyzer": {
+                  "tokenizer": "standard",
+                  "char_filter": [
+                      "my_mappings_char_filter"
+                  ]
+              }
+          },
+          "char_filter": {
+              "my_mappings_char_filter": {
+                  "type": "mapping",
+                  "mappings": [
+                      ":) => _happy_",
+                      ":( => _sad_"
+                  ]
+              }
+          }
+      }
+  }
+}
