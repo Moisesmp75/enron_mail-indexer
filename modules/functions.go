@@ -11,6 +11,7 @@ import (
 )
 
 func ReadFile(path string, mail *models.Mail) {
+	fmt.Println("Leyendo ", path)
 	file, err1 := os.Open(path)
 	if err1 != nil {
 		panic(err1.Error())

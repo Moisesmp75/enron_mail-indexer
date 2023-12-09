@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	url_index         = "http://ec2-3-15-154-241.us-east-2.compute.amazonaws.com:4080/api/index"
+	url_index         = "ttp://localhost:4080/api/index"
 	create_json_index = "create_index.json"
 	username          = "admin"
 	password          = "Complexpass#123"
