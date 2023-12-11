@@ -83,9 +83,11 @@ func PostMailZincSearch(url string, mail models.Mail, username string, password 
 	json, err := json.Marshal(mail)
 	if err != nil {
 		fmt.Println(err.Error())
+		return false, err
 	}
 	req, err1 := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(json))
 	if err1 != nil {
+		fmt.Println(err1.Error())
 		return false, err1
 	}
 	req.Header.Set("Content-Type", "application/json")

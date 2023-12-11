@@ -7,12 +7,11 @@ import (
 	"os"
 )
 
-var (
+const (
 	url_index         = "ttp://localhost:4080/api/index"
 	create_json_index = "create_index.json"
 	username          = "admin"
 	password          = "Complexpass#123"
-	url_api_data      = "http://localhost:4080/api/enron_mail/_doc"
 )
 
 func readJSON(path string) ([]byte, error) {
