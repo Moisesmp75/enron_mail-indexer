@@ -12,10 +12,6 @@ Esta aplicación en go nos permitirá indexar la base de datos de Enron Corp a Z
 
 # Ejecutar el programa
 <ol>
-  <li>Verificar si graphviz esta instalado correctamente:</li>
-  <pre>dot -V</pre>
-  debera mostrarse lo siguiente
-  <pre>dot - graphviz version 9.0.0 (20230911.1827)</pre>
   <li>Instalar Zincsearch y ejecutar con los siguientes parametros</li>
   <pre>
 ZINC_FIRST_ADMIN_USER=admin ZINC_FIRST_ADMIN_PASSWORD=Complexpass#123</pre>
@@ -29,7 +25,15 @@ ZINC_FIRST_ADMIN_USER=admin ZINC_FIRST_ADMIN_PASSWORD=Complexpass#123</pre>
   <li>Ejecutar el programa en go y especificar la ruta de la base de datos como parametro:</li>
   <pre>go run main.go full\of\path</pre>
   Esto creará el index Mail y en seguida empezará a indexar los mails en zincsearch
-  <li>Para visualizar el grafico del profile ejecutar el siguiente comando: </li>
+  <li>Para visualizar el grafico del profile hacer lo siguiente: </li>
+  <ul>
+  <li>Verificar si graphviz esta instalado correctamente:</li>
+  <pre>dot -V</pre>
+  <li>debera mostrarse lo siguiente o similar:</li>
+  <pre>dot - graphviz version 9.0.0 (20230911.1827)</pre>
+  <li>Luego, en la ruta del proyecto ejecutar el siguiente comando:</li>
   <pre>go tool pprof -http=:8080 cpu-v1.prof</pre>
   donde cpu-v1.prof es la version del indexador, puede usar cpu-v1.prof o cpu-v2.prof. Este comando le dirigira al navegador con la ruta http://localhost:8080/ui/
+  </ul>
 </ol>
+
