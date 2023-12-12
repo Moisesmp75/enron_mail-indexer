@@ -2,14 +2,15 @@ package main
 
 import (
 	"enron_mail-indexer/modules"
+	"flag"
 	"fmt"
 	"os"
 )
 
-// var (
-// 	cpuprofile = flag.String("cpuprofile", "", "escribe el perfil de la CPU en `file`")
-// 	memprofile = flag.String("memprofile", "", "escribe el perfil de memoria en `file`")
-// )
+var (
+	cpuprofile = flag.String("cpuprofile", "", "escribe el perfil de la CPU en `file`")
+	memprofile = flag.String("memprofile", "", "escribe el perfil de memoria en `file`")
+)
 
 func main() {
 	// flag.Parse()
@@ -24,17 +25,15 @@ func main() {
 	// 	}
 	// 	defer pprof.StopCPUProfile()
 	// }
-	// modules.Create_index_zincsearch()
+	modules.Create_index_zincsearch()
 
 	if len(os.Args) < 2 {
 		fmt.Println("Falta el path del directorio como argumento")
 		return
 	}
 	path := os.Args[1]
-	fmt.Println(path)
-	modules.IndexerV2(path)
-	// modules.IndexerConcurrent("D:\\Descargas\\enron_mail_20110402\\enron_mail_20110402\\maildir",runtime.NumCPU())
 
+	modules.IndexerV2(path)
 	// if *memprofile != "" {
 	// 	f, err := os.Create(*memprofile)
 	// 	if err != nil {
@@ -46,6 +45,4 @@ func main() {
 	// 			log.Fatal("no se pudo escribir el perfil de memoria: ", err)
 	// 	}
 	// }
-	// fmt.Println("Tiempo transcurrido:", duration)
-
 }

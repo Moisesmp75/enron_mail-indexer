@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	url_index         = "ttp://localhost:4080/api/index"
+	url_index         = "http://localhost:4080/api/index"
 	create_json_index = "create_index.json"
 	username          = "admin"
 	password          = "Complexpass#123"

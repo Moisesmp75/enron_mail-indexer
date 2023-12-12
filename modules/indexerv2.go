@@ -16,16 +16,18 @@ var (
 	wg sync.WaitGroup
 )
 
+//Esta funcion se ejecuta en una go rutina y se encarga de leer el archivo y
+//agregar el Mail en en canal
 func readFile2(path string, mail *models.Mail, channel chan models.Mail) {
 	fmt.Println("Leyendo ", path)
 	file, err1 := os.Open(path)
 	if err1 != nil {
-		panic(err1.Error())
+		fmt.Println(err1.Error())
 	}
 	file.Close()
 	content, err2 := os.ReadFile(path)
 	if err2 != nil {
-		panic(err2.Error())
+		fmt.Println(err2.Error())
 	}
 	strContent := string(content)
 	values := strings.Split(strContent, "\n")
@@ -87,6 +89,8 @@ func readFile2(path string, mail *models.Mail, channel chan models.Mail) {
 	defer wg.Done()
 }
 
+//Esta funcion se ejecuta en una go rutina y se encarga de obtener un Mail
+//del canal e indexarlo en zincsearch
 func postMailZincSearch2(url string, username string, password string, channel chan models.Mail) (bool, error) {
 	json, err := json.Marshal(<-channel)
 	if err != nil {
@@ -111,15 +115,22 @@ func postMailZincSearch2(url string, username string, password string, channel c
 	return true, nil
 }
 
+//Esta funcion recursiva se encarga de verificar si una ruta contiene archivos o es una carpeta
+//en caso de que contenga archivos para leer, se recorre con un bucle for cada archivo y se
+//ejecutan las go rutinas para leer el archivo mediante la funcion readFile2, mientras que
+//por otro lado se ejecutan las go rutinas para indexar las datos a zincsearch mediante la funcion
+//postMailZincSearch2, esta funcion escucha el canal de Mail y obtiene el dato para luego indexarlo.
 func inspectDirectory2(path string, url string, username string, password string, channel chan models.Mail) {
 	files, err := os.ReadDir(path)
 	if err != nil {
+		fmt.Println(err.Error())
 		return
 	}
+	fmt.Println(path)
 	if !files[0].IsDir() {
 		for _, file := range files {
-			wg.Add(2)
 			var mail models.Mail
+			wg.Add(2)
 			go readFile2(path+"\\"+file.Name(), &mail, channel)
 			go postMailZincSearch2(url, username, password, channel)
 		}
@@ -130,6 +141,13 @@ func inspectDirectory2(path string, url string, username string, password string
 	}
 }
 
+//Esta es una version mejorada de la funcion IndexerV1, ya que se hace uso de concurrencia para procesar datos
+//de manera paralela. Para realizarlo, se creó un canal de tipo Mail con un buffer de 10, este canal permitirá
+//que nuestras go rutinas se comuniquen. Las Funciones ReadFile2 y postMailZincSearch2 seran las go rutinas.
+//Mientras que inspectDirectory2 se encarga de ejecutar estas funciones. Para ello, la funcion inspectDirectory2
+//recorre recursivamente las carpetas, una vez que se detecta que una carpeta contiene los archivos necesarios
+//para la lectura, comienza a ejecutar la funcion readFile2 en una go rutina. mientras que por la otra parte, la
+//funcion postMailZincSearch2 espera los Mail entrantes para indexarlo en zincsearch, todo esto de manera concurrente.
 func IndexerV2(filePath string) {
 	now := time.Now()
 	channel := make(chan models.Mail, 10)
